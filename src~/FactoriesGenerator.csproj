@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+  <!-- настройки самого проекта, можете шатать как хотите в принципе -->
+  <PropertyGroup>
+      <!-- юнити требует именно эту версию -->
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <Nullable>disable</Nullable>
+      <IsPackable>false</IsPackable>
+      <LangVersion>latest</LangVersion>
+      <!-- чтобы при билде не геренировалась папка 'netstandard2.0' -->
+      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+      <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+      <IsRoslynComponent>true</IsRoslynComponent>
+  </PropertyGroup>
+
+  <!-- после билда в релизе копируем выхлоп в папку, которую видит юнити -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Release' ">
+      <Exec Command="cp bin/$(Configuration)/$(ProjectName).dll ../Runtime/Plugins/"/>
+  </Target>
+
+  <!-- cобственно сами пакеты которые сделают из dll'ки анализатор -->
+  <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.1" PrivateAssets="all"/>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" PrivateAssets="all"/>
+  </ItemGroup>
+    
+</Project>
