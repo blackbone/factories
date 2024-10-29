@@ -26,7 +26,7 @@ namespace Factories
         /// Creates new instance based on <see cref="key"/>
         /// </summary>
         /// <param name="key"> Unique key identifying required type. </param>
-        /// <returns> Instance of <see cref="TValue"/> derived type based on <see cref="key"/></returns>
+        /// <returns> Instance of <see cref="TValue"/> derived type based on <see cref="key"/>. </returns>
         /// <exception cref="KeyNotFoundException"> Thrown when key not registered. </exception>
         public static TValue Create(in TKey key)
         {
@@ -34,6 +34,18 @@ namespace Factories
                 throw new KeyNotFoundException($"Creation delegate with key \"{key}\" not found");
 
             return creationDelegate();
+        }
+
+        /// <summary>
+        /// Tries to create new instance based on <see cref="key"/>
+        /// </summary>
+        /// <param name="key"> Unique key identifying required type. </param>
+        /// <param name="result"> Instance of <see cref="TValue"/> derived type based on <see cref="key"/>.</param>
+        /// <returns> Is creation was success. </returns>
+        public static bool Create(in TKey key, out TValue result) {
+            var found = CreationDelegates.TryGetValue(key, out var creationDelegate);
+            result = found ? creationDelegate() : default;
+            return found;
         }
     }
 }
