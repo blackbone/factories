@@ -83,6 +83,7 @@ public class FactoriesSourceGenerator : ISourceGenerator
         // special formatting rules for strings and enums
         if (type.SpecialType == SpecialType.System_String) return $"\"{key}\"";
         if (type.TypeKind == TypeKind.Enum) return $"({type}){key}";
+        if (type.TypeKind is TypeKind.Struct or TypeKind.Class or TypeKind.Interface) return $"typeof({key})";
         return key.ToString();
     }
 
