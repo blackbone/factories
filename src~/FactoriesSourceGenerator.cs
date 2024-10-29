@@ -70,6 +70,9 @@ public class FactoriesSourceGenerator : ISourceGenerator
             sb.AppendLine("{");
             sb.AppendLine($"\tinternal static class {typeSymbol.Name}Registration");
             sb.AppendLine("\t{");
+            sb.AppendLine("#if UNITY_EDITOR");
+            sb.AppendLine("\t\t[UnityEditor.InitializeOnLoadMethod]");
+            sb.AppendLine("#endif");
             sb.AppendLine("\t\t[UnityEngine.RuntimeInitializeOnLoadMethod]");
             sb.AppendLine($"\t\tpublic static void Register() => Factory<{type}, {keyType}>.Register({Format(key, keyType)}, () => new {typeSymbol.Name}());");
             sb.AppendLine("\t}");
