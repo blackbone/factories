@@ -11,6 +11,11 @@ namespace Factories
         private static readonly Dictionary<TKey, FactoryDelegate> CreationDelegates = new();
 
         /// <summary>
+        /// All known registered keys. Useful for editor and debug.
+        /// </summary>
+        public static IEnumerable<TKey> Keys => CreationDelegates.Keys;
+        
+        /// <summary>
         /// Method used to register creation delegates for further use with <see cref="Create"/>.
         /// </summary>
         /// <param name="key">Unique key.</param>
